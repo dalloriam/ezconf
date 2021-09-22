@@ -46,3 +46,11 @@ export async function loadConfig<T>(namespace: string, name: string) {
     const rawConfig = await Deno.readTextFile(configPath);
     return JSON.parse(rawConfig) as T;
 }
+
+export async function writeConfig<T>(namespace: string, name: string, config: T) {
+    const configDir = getBaseConfigDir();
+    const configPath = path.join(configDir, namespace, name) + '.json';
+
+    const rawConfig = JSON.stringify(config);
+    await Deno.writeTextFile(configPath, rawConfig);
+}
