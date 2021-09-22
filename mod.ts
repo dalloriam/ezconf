@@ -49,6 +49,12 @@ export async function loadConfig<T>(namespace: string, name: string) {
 
 export async function writeConfig<T>(namespace: string, name: string, config: T) {
     const configDir = getBaseConfigDir();
+    const nsDir = path.join(configDir, namespace);
+
+    if (!await fs.exists(nsDir)) {
+        await Deno.mkdir(nsDir, { recursive: true });
+    }
+
     const configPath = path.join(configDir, namespace, name) + '.json';
 
     const rawConfig = JSON.stringify(config);
